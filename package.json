@@ -2,7 +2,10 @@
   "name": "leitner",
   "type": "module",
   "scripts": {
+    "start": "bun run src/index.ts",
     "dev": "bun run --hot src/index.ts",
+    "typecheck": "bun tsc --noEmit",
+    "build": "bun build src/index.ts",
     "lint": "biome check",
     "lint:fix": "biome check --fix"
   },
