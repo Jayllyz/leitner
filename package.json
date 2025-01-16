@@ -4,8 +4,7 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --hot src/index.ts",
-    "typecheck": "bun tsc --noEmit",
-    "build": "bun build src/index.ts",
+    "typecheck": "tsc --noEmit",
     "lint": "biome check",
     "lint:fix": "biome check --fix"
   },
@@ -17,6 +16,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "typescript": "^5.7.3"
   }
 }
