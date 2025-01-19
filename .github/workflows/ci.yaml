@@ -54,7 +54,7 @@ jobs:
 
     - name: Setup LCOV
       if: always() && github.event_name == 'pull_request'
-      uses: awalsh128/cache-apt-pkgs-action@v1
+      uses: awalsh128/cache-apt-pkgs-action@v1.4.3
       with:
         packages: lcov
 
