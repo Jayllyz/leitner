@@ -45,4 +45,14 @@ jobs:
       run: bun run typecheck
 
     - name: Run tests
-      run: bun test
+      run: bun test --coverage --coverage-reporter=lcov
+
+    - name: Upload coverage
+      if: always()
+      uses: zgosalvez/github-actions-report-lcov@v3
+      with:
+        coverage-files: coverage/lcov.*.info
+        minimum-coverage: 80
+        artifact-name: code-coverage-report
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        update-comment: true
