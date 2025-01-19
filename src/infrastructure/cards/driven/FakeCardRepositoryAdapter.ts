@@ -4,7 +4,11 @@ import type { CardRepository } from "@/domain/cards/CardRepository";
 import type { CardUserData } from "@/domain/cards/CardUserData";
 
 export class FakeCardRepositoryAdapter implements CardRepository {
-  private cards: Card[] = [];
+  private cards: Card[];
+
+  constructor() {
+    this.cards = [];
+  }
 
   public createCard(
     cardContent: CardUserData,
