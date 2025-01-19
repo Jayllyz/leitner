@@ -1,10 +1,10 @@
-import type { CardContent } from "./CardParameter";
+import type { CardUserData } from "./CardParameter";
 
 export class Card {
   id: number;
-  cardContent: CardContent;
+  cardContent: CardUserData;
 
-  constructor(id: number, cardContent: CardContent) {
+  constructor(id: number, cardContent: CardUserData) {
     this.id = id;
     this.cardContent = cardContent;
   }

@@ -1,5 +1,5 @@
 import type { Card } from "./Card";
-import type { CardContent } from "./CardParameter";
+import type { CardUserData } from "./CardParameter";
 import type { CardRepository } from "./CardRepository";
 import type { ManageCard } from "./ManageCard";
 
@@ -10,7 +10,7 @@ export class CardService implements ManageCard {
     this.cardRepository = cardRepository;
   }
 
-  createCard(cardContent: CardContent): Card {
+  createCard(cardContent: CardUserData): Card {
     return this.cardRepository.createCard(cardContent);
   }
 }

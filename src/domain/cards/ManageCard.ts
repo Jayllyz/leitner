@@ -1,6 +1,6 @@
 import type { Card } from "./Card";
-import type { CardContent } from "./CardParameter";
+import type { CardUserData } from "./CardParameter";
 
 export interface ManageCard {
-  createCard(cardContent: CardContent): Card;
+  createCard(cardContent: CardUserData): Card;
 }
