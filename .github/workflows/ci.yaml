@@ -54,11 +54,13 @@ jobs:
 
     - name: Setup LCOV
       if: always() && github.event_name == 'pull_request'
-      uses: hrishikesh-kadam/setup-lcov@v1
+      uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+      with:
+        packages: lcov
 
     - name: Upload coverage
       if: always() && github.event_name == 'pull_request'
-      uses: zgosalvez/github-actions-report-lcov@v3
+      uses: zgosalvez/github-actions-report-lcov@v4
       with:
         coverage-files: coverage/lcov.info
         minimum-coverage: 80
