@@ -14,3 +14,13 @@ export function mapCardDTOtoDomain(dto: CardDTO): Card {
 
   return new Card(dto.id, cardContent, cardCategory);
 }
+
+export function mapCardDomainToDTO(card: Card): CardDTO {
+  return {
+    id: card.id,
+    question: card.cardContent.question,
+    answer: card.cardContent.answer,
+    tag: card.cardContent.tag ?? null,
+    category: card.category,
+  };
+}
