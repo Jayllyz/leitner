@@ -1,4 +1,4 @@
-import type { CardUserData } from "./CardParameter";
+import type { CardUserData } from "./CardUserData";
 
 export class Card {
   id: number;

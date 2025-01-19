@@ -1,6 +1,6 @@
 import type { Card } from "./Card";
-import type { CardUserData } from "./CardParameter";
 import type { CardRepository } from "./CardRepository";
+import type { CardUserData } from "./CardUserData";
 import type { ManageCard } from "./ManageCard";
 
 export class CardService implements ManageCard {

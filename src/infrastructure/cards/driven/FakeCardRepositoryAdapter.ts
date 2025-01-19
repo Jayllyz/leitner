@@ -1,6 +1,6 @@
 import { Card } from "@/domain/cards/Card";
-import type { CardUserData } from "@/domain/cards/CardParameter";
 import type { CardRepository } from "@/domain/cards/CardRepository";
+import type { CardUserData } from "@/domain/cards/CardUserData";
 
 export class FakeCardRepositoryAdapter implements CardRepository {
   private cards: Card[] = [];
