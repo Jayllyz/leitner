@@ -5,3 +5,7 @@ saveTextLockfile = true
 coverage = true
 coverageThreshold = 0.8
 coverageSkipTestFiles = true
+coverageReporter = ["text", "lcov"]
+
+[run]
+bun = true

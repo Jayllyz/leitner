@@ -1,2 +1,10 @@
 node_modules/
 dist/
+coverage/
+lcov.info
+.DS_Store
+*.log
+
+# Ignore all lock files except for bun.lock
+*.lock
+!bun.lock
