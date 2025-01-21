@@ -50,3 +50,58 @@ test("should create category 1 card from user request", async () => {
   expect(cardJsonNoID).toEqual(expectedJsonContent);
   expect(id).toBeString();
 });
+
+test("should create category 1 card from user request without tag", async () => {
+  const createCardResult = await app.request("/cards", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      question: "What does 1+1 equals ?",
+      answer: "One",
+    }),
+  });
+
+  expect(createCardResult.status).toBe(201);
+  const cardJson = await createCardResult.json();
+
+  const expectedJsonContent = {
+    question: "What does 1+1 equals ?",
+    answer: "One",
+    category: "FIRST",
+  };
+
+  const { id, ...cardJsonNoID } = cardJson;
+
+  expect(cardJsonNoID).toEqual(expectedJsonContent);
+  expect(id).toBeString();
+});
+
+test("should throw error when trying to create card from user request without answer", async () => {
+  const createCardResult = await app.request("/cards", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      question: "What does 1+1 equals ?",
+    }),
+  });
+
+  expect(createCardResult.status).toBe(400);
+});
+
+test("should throw error when trying to create card from user request without question", async () => {
+  const createCardResult = await app.request("/cards", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      answer: "One",
+    }),
+  });
+
+  expect(createCardResult.status).toBe(400);
+});
