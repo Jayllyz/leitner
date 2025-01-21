@@ -7,7 +7,7 @@ import { mapCardDTOtoDomain, mapCardDomainToDTO } from "./cardDTOMapper";
 
 test("should map card dto do domain object", () => {
   const rawDTO: CardDTO = {
-    id: 1,
+    id: "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
     category: "SECOND",
     question: "What is hexagonal architecture?",
     answer: "It's a design pattern for organizing code.",
@@ -15,7 +15,7 @@ test("should map card dto do domain object", () => {
   };
 
   const expectedDomainCard = new Card(
-    1,
+    "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
     new CardUserData(
       "What is hexagonal architecture?",
       "It's a design pattern for organizing code.",
@@ -31,7 +31,7 @@ test("should map card dto do domain object", () => {
 
 test("should map card domain object do dto", () => {
   const cardDomainObject = new Card(
-    1,
+    "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
     new CardUserData(
       "What is hexagonal architecture?",
       "It's a design pattern for organizing code.",
@@ -41,7 +41,7 @@ test("should map card domain object do dto", () => {
   );
 
   const expectedDTO: CardDTO = {
-    id: 1,
+    id: "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
     category: "SECOND",
     question: "What is hexagonal architecture?",
     answer: "It's a design pattern for organizing code.",

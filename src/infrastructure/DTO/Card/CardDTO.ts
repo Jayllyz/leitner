@@ -1,7 +1,7 @@
 import { z } from "@hono/zod-openapi";
 
 export const CardDTO = z.object({
-  id: z.coerce.number().min(0),
+  id: z.string(),
   category: z.enum([
     "FIRST",
     "SECOND",
