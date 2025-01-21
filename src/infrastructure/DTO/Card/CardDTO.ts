@@ -14,7 +14,7 @@ export const CardDTO = z.object({
   ]),
   question: z.string().max(500),
   answer: z.string().max(500),
-  tag: z.string().max(128).nullable(),
+  tag: z.string().max(128).optional(),
 });
 
 export type CardDTO = z.infer<typeof CardDTO>;

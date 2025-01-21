@@ -17,6 +17,6 @@ export function mapCardUserDataDomainToDTO(
   return {
     question: cardUserData.question,
     answer: cardUserData.answer,
-    tag: cardUserData.tag ?? null,
+    tag: cardUserData.tag,
   };
 }

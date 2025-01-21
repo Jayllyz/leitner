@@ -20,7 +20,7 @@ export function mapCardDomainToDTO(card: Card): CardDTO {
     id: card.id,
     question: card.cardContent.question,
     answer: card.cardContent.answer,
-    tag: card.cardContent.tag ?? null,
+    tag: card.cardContent.tag,
     category: card.category,
   };
 }

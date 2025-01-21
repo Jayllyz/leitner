@@ -4,11 +4,18 @@ import type { Context } from "hono";
 import { cors } from "hono/cors";
 import { prettyJSON } from "hono/pretty-json";
 import { secureHeaders } from "hono/secure-headers";
+import type { CardRepository } from "./domain/cards/CardRepository";
+import type { ManageCard } from "./domain/cards/ManageCard";
+import { CardService } from "./domain/cards/cardService";
+import { FakeCardRepositoryAdapter } from "./infrastructure/cards/driven/FakeCardRepositoryAdapter";
+import { CardControllerAdapter } from "./infrastructure/cards/driving/CardControllerAdapter";
 
 const app = new OpenAPIHono();
 
 app.use("*", prettyJSON(), secureHeaders(), cors());
 app.get("/", (c) => c.text("Welcome to the API!"));
+
+app.route("/", getCardController().cardApiHandler);
 
 const healthCheck = createRoute({
   method: "get",
@@ -30,7 +37,7 @@ const healthCheck = createRoute({
 app.openapi(healthCheck, (c) => c.json("OK", 200));
 
 app.doc("/doc", (c: Context) => ({
-  openapi: "3.3.0",
+  openapi: "3.1.0",
   info: {
     version: "1.0.0",
     title: "API",
@@ -46,3 +53,10 @@ app.doc("/doc", (c: Context) => ({
 app.get("/ui", swaggerUI({ url: "/doc" }));
 
 export default app;
+
+function getCardController(): CardControllerAdapter {
+  const cardRepository: CardRepository = new FakeCardRepositoryAdapter();
+  const cardManager: ManageCard = new CardService(cardRepository);
+  const cardControllerAdapter = new CardControllerAdapter(cardManager);
+  return cardControllerAdapter;
+}
