@@ -30,7 +30,7 @@ const healthCheck = createRoute({
 app.openapi(healthCheck, (c) => c.json("OK", 200));
 
 app.doc("/doc", (c: Context) => ({
-  openapi: "3.3.0",
+  openapi: "3.1.0",
   info: {
     version: "1.0.0",
     title: "API",
