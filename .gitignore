@@ -4,6 +4,8 @@ coverage/
 lcov.info
 .DS_Store
 *.log
+# ingore build binary
+leitner
 
 # Ignore all lock files except for bun.lock
 *.lock
