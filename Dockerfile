@@ -11,7 +11,6 @@ RUN bun run build
 FROM base AS production
 WORKDIR /app
 
-COPY --chown=bun:bun --from=build /temp/node_modules ./node_modules
 COPY --chown=bun:bun --from=build /temp/leitner ./leitner
 
 USER bun
