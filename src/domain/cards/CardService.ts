@@ -5,24 +5,27 @@ import type { CardUserData } from "./CardUserData";
 import type { ManageCard } from "./ManageCard";
 
 export class CardService implements ManageCard {
-  cardRepository: CardRepository;
-
-  constructor(cardRepository: CardRepository) {
-    this.cardRepository = cardRepository;
-  }
+  constructor(private readonly cardRepository: CardRepository) {}
 
   createCard(cardContent: CardUserData): Card {
     return this.cardRepository.createCard(cardContent, CardCategory.First);
   }
 
   getAllCards(tags?: string[]): Card[] {
-    if (!tags || tags.length === 0) {
-      return this.cardRepository.getAllCards();
+    const allCards = this.cardRepository.getAllCards();
+    if (this.shouldReturnAllCards(tags)) {
+      return allCards;
     }
 
-    return this.cardRepository
-      .getAllCards()
-      .filter((card) => this.hasMatchingTags(card, tags));
+    return this.getFilteredCards(allCards, tags as string[]);
+  }
+
+  private shouldReturnAllCards(tags?: string[]): boolean {
+    return !tags?.length;
+  }
+
+  private getFilteredCards(cards: Card[], tags: string[]): Card[] {
+    return cards.filter((card) => this.hasMatchingTags(card, tags));
   }
 
   private hasMatchingTags(card: Card, tags: string[]): boolean {
