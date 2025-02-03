@@ -16,6 +16,46 @@ describe("isCardDateValid", () => {
       CardCategory.First,
     );
 
-    expect(isCardDateValid(cardDomainObject));
+    cardDomainObject.lastUpdateDate.setDate(
+      cardDomainObject.lastUpdateDate.getDate() - 1,
+    );
+
+    expect(isCardDateValid(cardDomainObject)).toBe(true);
+  });
+
+  test("card should be valid when card last update date is 2 days ago and category is 2", () => {
+    const cardDomainObject = new Card(
+      "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
+      new CardUserData(
+        "What is hexagonal architecture?",
+        "It's a design pattern for organizing code.",
+        "architecture",
+      ),
+      CardCategory.Second,
+    );
+
+    cardDomainObject.lastUpdateDate.setDate(
+      cardDomainObject.lastUpdateDate.getDate() - 2,
+    );
+
+    expect(isCardDateValid(cardDomainObject)).toBe(true);
+  });
+
+  test("card should be valid when card last update date is 16 days ago and category is 5", () => {
+    const cardDomainObject = new Card(
+      "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
+      new CardUserData(
+        "What is hexagonal architecture?",
+        "It's a design pattern for organizing code.",
+        "architecture",
+      ),
+      CardCategory.Fifth,
+    );
+
+    cardDomainObject.lastUpdateDate.setDate(
+      cardDomainObject.lastUpdateDate.getDate() - 16,
+    );
+
+    expect(isCardDateValid(cardDomainObject)).toBe(true);
   });
 });
