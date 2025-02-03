@@ -26,6 +26,10 @@ export function isCardDateValid(card: Card): boolean {
 }
 
 function getCardNextQuizzDate(card: Card): Date {
+  if (card.category === "DONE") {
+    throw new Error("Card is already done");
+  }
+
   const cardDate = new Date(card.lastUpdateDate);
   const waitTime = CardCategoryWaitTime[card.category];
 

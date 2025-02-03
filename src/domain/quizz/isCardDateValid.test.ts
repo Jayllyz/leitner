@@ -58,4 +58,20 @@ describe("isCardDateValid", () => {
 
     expect(isCardDateValid(cardDomainObject)).toBe(true);
   });
+
+  test("card should throw an error when category is DONE", () => {
+    const cardDomainObject = new Card(
+      "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
+      new CardUserData(
+        "What is hexagonal architecture?",
+        "It's a design pattern for organizing code.",
+        "architecture",
+      ),
+      CardCategory.Done,
+    );
+
+    expect(() => isCardDateValid(cardDomainObject)).toThrowError(
+      "Card is already done",
+    );
+  });
 });
