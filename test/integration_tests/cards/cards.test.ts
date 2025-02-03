@@ -132,4 +132,19 @@ describe("get cards", () => {
       expect(card).toBeInstanceOf(Card);
     }
   });
+
+  test("should get all cards from user request", async () => {
+    const cardsResult = await app.request("/cards", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    expect(cardsResult.status).toBe(200);
+    const cardsJson = await cardsResult.json();
+
+    expect(cardsJson).toBeArray();
+    expect(cardsJson).not.toBeEmpty();
+  });
 });

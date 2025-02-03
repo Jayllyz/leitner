@@ -1,10 +1,12 @@
+import type { Card } from "@/domain/cards/Card";
 import type { CardUserData } from "@/domain/cards/CardUserData";
 import type { ManageCard } from "@/domain/cards/ManageCard";
+import type { CardDTO } from "@/infrastructure/DTO/Card/CardDTO";
 import type { CardUserDataDTO } from "@/infrastructure/DTO/Card/CardUserDataDTO";
 import { mapCardDomainToDTO } from "@/infrastructure/DTO/Card/cardDTOMapper";
 import { mapCardUserDataDTOtoDomain } from "@/infrastructure/DTO/Card/cardUserDataDTOMapper";
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { createCardRoute } from "./cardRoutes";
+import { createCardRoute, getAllCardsRoute } from "./cardRoutes";
 
 export class CardControllerAdapter {
   cardApiHandler: OpenAPIHono;
@@ -14,6 +16,7 @@ export class CardControllerAdapter {
     this.cardManager = cardManager;
     this.cardApiHandler = new OpenAPIHono();
     this.addCreateCardRoute();
+    this.addGetAllCardRoute();
   }
 
   private addCreateCardRoute() {
@@ -29,6 +32,18 @@ export class CardControllerAdapter {
       const createdCardDTO = mapCardDomainToDTO(createdCard);
 
       return ctx.json(createdCardDTO, 201);
+    });
+  }
+
+  private addGetAllCardRoute() {
+    this.cardApiHandler.openapi(getAllCardsRoute, async (ctx) => {
+      const cards: Card[] = this.cardManager.getAllCards();
+      const cardsDTO: CardDTO[] = [];
+      for (const card of cards) {
+        cardsDTO.push(mapCardDomainToDTO(card));
+      }
+
+      return ctx.json(cardsDTO, 200);
     });
   }
 }
