@@ -10,8 +10,10 @@ export class CardService implements ManageCard {
   constructor(cardRepository: CardRepository) {
     this.cardRepository = cardRepository;
   }
-
   createCard(cardContent: CardUserData): Card {
     return this.cardRepository.createCard(cardContent, CardCategory.First);
+  }
+  getAllCards(): Card[] {
+    return this.cardRepository.getAllCards();
   }
 }

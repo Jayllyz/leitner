@@ -1,4 +1,5 @@
-import { expect, test } from "bun:test";
+import { beforeAll, describe, expect, test } from "bun:test";
+import { Card } from "@/domain/cards/Card";
 import { CardCategory } from "@/domain/cards/CardCategory";
 import type { CardRepository } from "@/domain/cards/CardRepository";
 import { CardService } from "@/domain/cards/CardService";
@@ -7,101 +8,143 @@ import type { ManageCard } from "@/domain/cards/ManageCard";
 import app from "@/index";
 import { FakeCardRepositoryAdapter } from "@/infrastructure/cards/driven/FakeCardRepositoryAdapter";
 
-test("should create category 1 card from CardService", () => {
-  const cardRepository: CardRepository = new FakeCardRepositoryAdapter();
-  const cardManager: ManageCard = new CardService(cardRepository);
+describe("card creation test", () => {
+  test("should create category 1 card from CardService", () => {
+    const cardRepository: CardRepository = new FakeCardRepositoryAdapter();
+    const cardManager: ManageCard = new CardService(cardRepository);
 
-  const cardQuestion = "How much planets are in our solar system ?";
-  const cardAnswer = "43";
-  const tag = "Physics";
+    const cardQuestion = "How much planets are in our solar system ?";
+    const cardAnswer = "43";
+    const tag = "Physics";
 
-  const cardContent = new CardUserData(cardQuestion, cardAnswer, tag);
+    const cardContent = new CardUserData(cardQuestion, cardAnswer, tag);
 
-  const createdCard = cardManager.createCard(cardContent);
+    const createdCard = cardManager.createCard(cardContent);
 
-  expect(createdCard.category).toEqual(CardCategory.First);
-});
+    expect(createdCard.category).toEqual(CardCategory.First);
+  });
 
-test("should create category 1 card from user request", async () => {
-  const createCardResult = await app.request("/cards", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  test("should create category 1 card from user request", async () => {
+    const createCardResult = await app.request("/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: "What is pair programming ?",
+        answer: "A practice to work in pair on same computer.",
+        tag: "Teamwork",
+      }),
+    });
+
+    expect(createCardResult.status).toBe(201);
+    const cardJson = await createCardResult.json();
+
+    const expectedJsonContent = {
       question: "What is pair programming ?",
       answer: "A practice to work in pair on same computer.",
       tag: "Teamwork",
-    }),
+      category: "FIRST",
+    };
+
+    const { id, ...cardJsonNoID } = cardJson;
+
+    expect(cardJsonNoID).toEqual(expectedJsonContent);
+    expect(id).toBeString();
   });
 
-  expect(createCardResult.status).toBe(201);
-  const cardJson = await createCardResult.json();
+  test("should create category 1 card from user request without tag", async () => {
+    const createCardResult = await app.request("/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: "What does 1+1 equals ?",
+        answer: "One",
+      }),
+    });
 
-  const expectedJsonContent = {
-    question: "What is pair programming ?",
-    answer: "A practice to work in pair on same computer.",
-    tag: "Teamwork",
-    category: "FIRST",
-  };
+    expect(createCardResult.status).toBe(201);
+    const cardJson = await createCardResult.json();
 
-  const { id, ...cardJsonNoID } = cardJson;
-
-  expect(cardJsonNoID).toEqual(expectedJsonContent);
-  expect(id).toBeString();
-});
-
-test("should create category 1 card from user request without tag", async () => {
-  const createCardResult = await app.request("/cards", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+    const expectedJsonContent = {
       question: "What does 1+1 equals ?",
       answer: "One",
-    }),
+      category: "FIRST",
+    };
+
+    const { id, ...cardJsonNoID } = cardJson;
+
+    expect(cardJsonNoID).toEqual(expectedJsonContent);
+    expect(id).toBeString();
   });
 
-  expect(createCardResult.status).toBe(201);
-  const cardJson = await createCardResult.json();
+  test("should throw error when trying to create card from user request without answer", async () => {
+    const createCardResult = await app.request("/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: "What does 1+1 equals ?",
+      }),
+    });
 
-  const expectedJsonContent = {
-    question: "What does 1+1 equals ?",
-    answer: "One",
-    category: "FIRST",
-  };
+    expect(createCardResult.status).toBe(400);
+  });
 
-  const { id, ...cardJsonNoID } = cardJson;
+  test("should throw error when trying to create card from user request without question", async () => {
+    const createCardResult = await app.request("/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        answer: "One",
+      }),
+    });
 
-  expect(cardJsonNoID).toEqual(expectedJsonContent);
-  expect(id).toBeString();
+    expect(createCardResult.status).toBe(400);
+  });
 });
 
-test("should throw error when trying to create card from user request without answer", async () => {
-  const createCardResult = await app.request("/cards", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      question: "What does 1+1 equals ?",
-    }),
+describe("get cards", () => {
+  let cardRepository: CardRepository;
+  let cardManager: ManageCard;
+
+  beforeAll(() => {
+    cardRepository = new FakeCardRepositoryAdapter();
+    cardManager = new CardService(cardRepository);
+
+    cardManager.createCard(
+      new CardUserData("de quel couleur est cars", "rouge"),
+    );
+    cardManager.createCard(new CardUserData("que boit la vache", "du lait"));
   });
 
-  expect(createCardResult.status).toBe(400);
-});
+  test("should get all cards from CardService", () => {
+    const cards = cardManager.getAllCards();
 
-test("should throw error when trying to create card from user request without question", async () => {
-  const createCardResult = await app.request("/cards", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      answer: "One",
-    }),
+    expect(cards).toBeArray();
+    expect(cards).not.toBeEmpty();
+    for (const card of cards) {
+      expect(card).toBeInstanceOf(Card);
+    }
   });
 
-  expect(createCardResult.status).toBe(400);
+  test("should get all cards from user request", async () => {
+    const cardsResult = await app.request("/cards", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    expect(cardsResult.status).toBe(200);
+    const cardsJson = await cardsResult.json();
+
+    expect(cardsJson).toBeArray();
+    expect(cardsJson).not.toBeEmpty();
+  });
 });
