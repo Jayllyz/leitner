@@ -12,9 +12,9 @@ export const CardDTO = z.object({
     "SEVENTH",
     "DONE",
   ]),
-  question: z.string().max(500),
-  answer: z.string().max(500),
-  tag: z.string().max(128).optional(),
+  question: z.string(),
+  answer: z.string(),
+  tag: z.string().optional(),
 });
 
 export type CardDTO = z.infer<typeof CardDTO>;
