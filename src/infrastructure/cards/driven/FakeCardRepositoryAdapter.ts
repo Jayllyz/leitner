@@ -21,4 +21,7 @@ export class FakeCardRepositoryAdapter implements CardRepository {
     this.cards.push(newCard);
     return newCard;
   }
+  getAllCards(): Card[] {
+    return this.cards;
+  }
 }
