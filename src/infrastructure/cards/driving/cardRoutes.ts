@@ -37,6 +37,12 @@ export const getAllCardsRoute = createRoute({
   summary: "Get all cards",
   description:
     "Used to fetch every cards with given tags. If no tags are provided, will fetch all cards.",
+  query: {
+    tags: {
+      description: "Tags to filter the cards",
+      schema: z.array(z.string()),
+    },
+  },
   responses: {
     200: {
       description: "Successful response",
