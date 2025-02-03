@@ -7,10 +7,15 @@ export class Card {
   category: CardCategory;
   lastUpdateDate: Date;
 
-  constructor(id: string, cardContent: CardUserData, category: CardCategory) {
+  constructor(
+    id: string,
+    cardContent: CardUserData,
+    category: CardCategory,
+    cardDate?: Date,
+  ) {
     this.id = id;
     this.cardContent = cardContent;
     this.category = category;
-    this.lastUpdateDate = new Date();
+    this.lastUpdateDate = cardDate ? cardDate : new Date();
   }
 }

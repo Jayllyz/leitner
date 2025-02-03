@@ -16,7 +16,12 @@ const CardCategoryWaitTime: CardCategoryWaitTime = {
 
 export function isCardDateValid(card: Card): boolean {
   const today = new Date();
-  const cardDate = getCardNextQuizzDate(card);
+  let cardDate: Date;
+  try {
+    cardDate = getCardNextQuizzDate(card);
+  } catch {
+    return false;
+  }
 
   return (
     today.getDate() === cardDate.getDate() &&

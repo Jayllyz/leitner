@@ -15,18 +15,24 @@ export class FakeCardRepositoryAdapter implements CardRepository {
   public createCard(
     cardContent: CardUserData,
     cardCategory: CardCategory,
+    cardDate?: Date,
   ): Card {
     const randomId = randomUUIDv7();
-    const newCard = new Card(randomId, cardContent, cardCategory);
+    const newCard = new Card(randomId, cardContent, cardCategory, cardDate);
 
     this.cards.push(newCard);
     return newCard;
   }
+
   getAllCards(): Card[] {
     return this.cards;
   }
 
   private createFakeCards() {
+    const today = new Date();
+    const cardDate = new Date(today);
+
+    cardDate.setDate(today.getDate() - 1);
     this.createCard(
       new CardUserData(
         "What is TypeScript?",
@@ -34,6 +40,7 @@ export class FakeCardRepositoryAdapter implements CardRepository {
         "programming",
       ),
       CardCategory.First,
+      cardDate,
     );
     this.createCard(
       new CardUserData(
