@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test";
 import { CardCategory } from "@/domain/cards/CardCategory";
 import type { CardRepository } from "@/domain/cards/CardRepository";
+import { CardService } from "@/domain/cards/CardService";
 import { CardUserData } from "@/domain/cards/CardUserData";
 import type { ManageCard } from "@/domain/cards/ManageCard";
-import { CardService } from "@/domain/cards/cardService";
 import app from "@/index";
 import { FakeCardRepositoryAdapter } from "@/infrastructure/cards/driven/FakeCardRepositoryAdapter";
 
