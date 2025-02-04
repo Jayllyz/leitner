@@ -70,7 +70,8 @@ export const getQuizzRoute = createRoute({
         ),
     }),
   },
-  summary:
+  summary: "Cards of the day",
+  description:
     "Used to fetch all cards for a quizz at a given date. If no date is provided, quizz will be for today.",
   responses: {
     200: {
