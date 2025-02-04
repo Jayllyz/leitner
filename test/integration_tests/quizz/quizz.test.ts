@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { CardCategory } from "@/domain/cards/CardCategory";
 import type { CardRepository } from "@/domain/cards/CardRepository";
+import { CardService } from "@/domain/cards/CardService";
+import type { ManageCard } from "@/domain/cards/ManageCard";
 import type { ManageQuizz } from "@/domain/quizz/ManageQuizz";
 import { QuizzService } from "@/domain/quizz/QuizzService";
 import app from "@/index";
@@ -66,5 +68,31 @@ describe("Validate answer", () => {
 
     expect(card.category).toBe(CardCategory.Second);
     expect(card.lastUpdateDate.toDateString()).toBe(new Date().toDateString());
+  });
+
+  test("answer a card", async () => {
+    const createCardResult = await app.request("/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: "TEST",
+        answer: "TEST",
+      }),
+    });
+
+    const card = await createCardResult.json();
+
+    const route = `/cards/${card.id}/answer`;
+    const routeResult = await app.request(route, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isValid: true }),
+    });
+
+    expect(routeResult.status).toBe(204);
   });
 });
