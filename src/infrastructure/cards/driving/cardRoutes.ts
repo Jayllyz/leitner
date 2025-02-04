@@ -37,11 +37,17 @@ export const getAllCardsRoute = createRoute({
   summary: "Get all cards",
   description:
     "Used to fetch every cards with given tags. If no tags are provided, will fetch all cards.",
-  query: {
-    tags: {
-      description: "Tags to filter the cards",
-      schema: z.array(z.string()),
-    },
+  request: {
+    query: z.object({
+      tags: z
+        .string()
+        .or(z.array(z.string()))
+        .optional()
+        .transform((val) => (typeof val === "string" ? [val] : val))
+        .describe(
+          "Tags of cards to find. If not present, all cards will be found. Example : tag1,tag2",
+        ),
+    }),
   },
   responses: {
     200: {

@@ -19,9 +19,23 @@ export class CardControllerAdapter {
     this.cardManager = cardManager;
     this.quizzManager = quizzManager;
     this.cardApiHandler = new OpenAPIHono();
-    this.addCreateCardRoute();
     this.addGetAllCardRoute();
+    this.addCreateCardRoute();
     this.addGetQuizzRoute();
+  }
+
+  private addGetAllCardRoute() {
+    this.cardApiHandler.openapi(getAllCardsRoute, async (ctx) => {
+      const { tags } = ctx.req.valid("query");
+      const cards: Card[] = this.cardManager.getAllCards(tags);
+
+      const cardsDTO: CardDTO[] = [];
+      for (const card of cards) {
+        cardsDTO.push(mapCardDomainToDTO(card));
+      }
+
+      return ctx.json(cardsDTO, 200);
+    });
   }
 
   private addCreateCardRoute() {
@@ -37,20 +51,6 @@ export class CardControllerAdapter {
       const createdCardDTO = mapCardDomainToDTO(createdCard);
 
       return ctx.json(createdCardDTO, 201);
-    });
-  }
-
-  private addGetAllCardRoute() {
-    this.cardApiHandler.openapi(getAllCardsRoute, async (ctx) => {
-      const tags = ctx.req.queries("tags");
-      const cards: Card[] = this.cardManager.getAllCards(tags);
-
-      const cardsDTO: CardDTO[] = [];
-      for (const card of cards) {
-        cardsDTO.push(mapCardDomainToDTO(card));
-      }
-
-      return ctx.json(cardsDTO, 200);
     });
   }
 
