@@ -118,7 +118,7 @@ describe("get cards", () => {
     cardManager = new CardService(cardRepository);
 
     cardManager.createCard(
-      new CardUserData("de quel couleur est cars", "rouge"),
+      new CardUserData("de quel couleur est cars", "rouge", "Cars"),
     );
     cardManager.createCard(new CardUserData("que boit la vache", "du lait"));
   });
@@ -131,6 +131,13 @@ describe("get cards", () => {
     for (const card of cards) {
       expect(card).toBeInstanceOf(Card);
     }
+  });
+
+  test("should get all cards from CardService with tag", () => {
+    const cards = cardManager.getAllCards(["Cars"]);
+
+    expect(cards).toBeArray();
+    expect(cards).toHaveLength(1);
   });
 
   test("should get all cards from user request", async () => {
@@ -146,5 +153,20 @@ describe("get cards", () => {
 
     expect(cardsJson).toBeArray();
     expect(cardsJson).not.toBeEmpty();
+  });
+
+  test("should get all cards from user request with tag", async () => {
+    const cardsResult = await app.request("/cards?tags=Teamwork", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    expect(cardsResult.status).toBe(200);
+    const cardsJson = await cardsResult.json();
+
+    expect(cardsJson).toBeArray();
+    expect(cardsJson).toHaveLength(1);
   });
 });

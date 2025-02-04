@@ -42,7 +42,9 @@ export class CardControllerAdapter {
 
   private addGetAllCardRoute() {
     this.cardApiHandler.openapi(getAllCardsRoute, async (ctx) => {
-      const cards: Card[] = this.cardManager.getAllCards();
+      const tags = ctx.req.queries("tags");
+      const cards: Card[] = this.cardManager.getAllCards(tags);
+
       const cardsDTO: CardDTO[] = [];
       for (const card of cards) {
         cardsDTO.push(mapCardDomainToDTO(card));
