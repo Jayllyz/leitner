@@ -28,14 +28,14 @@ export class QuizzService implements ManageQuizz {
   }
 
   validateAnswer(card: Card, isValid: boolean): Card {
+    card.lastUpdateDate = new Date();
+
     if (!isValid) {
       card.category = CardCategory.First;
-      card.lastUpdateDate = new Date();
       return card;
     }
 
     card.category = getNextCategory(card);
-    card.lastUpdateDate = new Date();
     return card;
   }
 }

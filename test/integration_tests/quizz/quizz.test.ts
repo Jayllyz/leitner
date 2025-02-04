@@ -1,8 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { CardCategory } from "@/domain/cards/CardCategory";
 import type { CardRepository } from "@/domain/cards/CardRepository";
-import { CardService } from "@/domain/cards/CardService";
-import type { ManageCard } from "@/domain/cards/ManageCard";
 import type { ManageQuizz } from "@/domain/quizz/ManageQuizz";
 import { QuizzService } from "@/domain/quizz/QuizzService";
 import app from "@/index";
