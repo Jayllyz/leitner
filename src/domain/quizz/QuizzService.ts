@@ -1,7 +1,9 @@
 import type { Card } from "../cards/Card";
+import { CardCategory } from "../cards/CardCategory";
 import type { CardRepository } from "../cards/CardRepository";
 import type { ManageQuizz } from "./ManageQuizz";
 import { Quizz } from "./Quizz";
+import { getNextCategory } from "./getNextCategory";
 import { isCardDateValid } from "./isCardDateValid";
 
 export class QuizzService implements ManageQuizz {
@@ -23,5 +25,17 @@ export class QuizzService implements ManageQuizz {
     return cards.filter((card) => {
       return isCardDateValid(card, date);
     });
+  }
+
+  validateAnswer(card: Card, isValid: boolean): Card {
+    if (!isValid) {
+      card.category = CardCategory.First;
+      card.lastUpdateDate = new Date();
+      return card;
+    }
+
+    card.category = getNextCategory(card);
+    card.lastUpdateDate = new Date();
+    return card;
   }
 }
