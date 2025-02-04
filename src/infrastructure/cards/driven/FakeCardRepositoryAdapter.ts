@@ -28,6 +28,16 @@ export class FakeCardRepositoryAdapter implements CardRepository {
     return this.cards;
   }
 
+  getCardById(id: string): Card {
+    const card = this.cards.find((card) => card.id === id);
+
+    if (!card) {
+      throw new Error(`Card with id ${id} not found`);
+    }
+
+    return card;
+  }
+
   private createFakeCards() {
     const today = new Date();
     const cardDate = new Date(today);

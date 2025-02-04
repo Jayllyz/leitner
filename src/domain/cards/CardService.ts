@@ -21,15 +21,7 @@ export class CardService implements ManageCard {
   }
 
   getCardById(id: string): Card {
-    const card = this.cardRepository
-      .getAllCards()
-      .find((card) => card.id === id);
-
-    if (!card) {
-      throw new Error(`Card with id ${id} not found`);
-    }
-
-    return card;
+    return this.cardRepository.getCardById(id);
   }
 
   private shouldReturnAllCards(tags?: string[]): boolean {
