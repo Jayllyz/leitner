@@ -20,6 +20,18 @@ export class CardService implements ManageCard {
     return this.getFilteredCards(allCards, tags as string[]);
   }
 
+  getCardById(id: string): Card {
+    const card = this.cardRepository
+      .getAllCards()
+      .find((card) => card.id === id);
+
+    if (!card) {
+      throw new Error(`Card with id ${id} not found`);
+    }
+
+    return card;
+  }
+
   private shouldReturnAllCards(tags?: string[]): boolean {
     return !tags?.length;
   }

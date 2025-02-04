@@ -169,4 +169,17 @@ describe("get cards", () => {
     expect(cardsJson).toBeArray();
     expect(cardsJson).toHaveLength(1);
   });
+
+  test("should get one card", async () => {
+    const cards = cardManager.getAllCards();
+    const card = cards[0];
+
+    if (!card) {
+      throw new Error("No card found");
+    }
+
+    const cardResult = cardManager.getCardById(card.id);
+
+    expect(cardResult).toEqual(card);
+  });
 });
