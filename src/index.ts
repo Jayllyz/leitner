@@ -7,6 +7,8 @@ import { secureHeaders } from "hono/secure-headers";
 import type { CardRepository } from "./domain/cards/CardRepository";
 import { CardService } from "./domain/cards/CardService";
 import type { ManageCard } from "./domain/cards/ManageCard";
+import type { ManageQuizz } from "./domain/quizz/ManageQuizz";
+import { QuizzService } from "./domain/quizz/QuizzService";
 import { FakeCardRepositoryAdapter } from "./infrastructure/cards/driven/FakeCardRepositoryAdapter";
 import { CardControllerAdapter } from "./infrastructure/cards/driving/CardControllerAdapter";
 
@@ -57,6 +59,10 @@ export default app;
 function getCardController(): CardControllerAdapter {
   const cardRepository: CardRepository = new FakeCardRepositoryAdapter();
   const cardManager: ManageCard = new CardService(cardRepository);
-  const cardControllerAdapter = new CardControllerAdapter(cardManager);
+  const quizzManager: ManageQuizz = new QuizzService(cardRepository);
+  const cardControllerAdapter = new CardControllerAdapter(
+    cardManager,
+    quizzManager,
+  );
   return cardControllerAdapter;
 }
