@@ -92,3 +92,41 @@ export const getQuizzRoute = createRoute({
   },
   tags: ["Learning"],
 });
+
+export const answerCard = createRoute({
+  method: "patch",
+  path: "/cards/{cardId}/answer",
+  request: {
+    params: z.object({
+      cardId: z.string().describe("Id of answered card."),
+    }),
+    body: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            isValid: z.boolean(),
+          }),
+        },
+      },
+    },
+  },
+  summary: "Answer a card",
+  description:
+    "Used to answer a question. Body indicate if user has answered correctly or not.",
+  responses: {
+    204: {
+      description: "Successful response",
+    },
+    400: badRequestSchema,
+    404: {
+      description: "Card not found",
+      content: {
+        "application/json": {
+          schema: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+    },
+  },
+});

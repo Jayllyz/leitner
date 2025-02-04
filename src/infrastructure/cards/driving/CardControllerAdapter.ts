@@ -8,7 +8,12 @@ import type { CardUserDataDTO } from "@/infrastructure/DTO/Card/CardUserDataDTO"
 import { mapCardDomainToDTO } from "@/infrastructure/DTO/Card/cardDTOMapper";
 import { mapCardUserDataDTOtoDomain } from "@/infrastructure/DTO/Card/cardUserDataDTOMapper";
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { createCardRoute, getAllCardsRoute, getQuizzRoute } from "./cardRoutes";
+import {
+  answerCard,
+  createCardRoute,
+  getAllCardsRoute,
+  getQuizzRoute,
+} from "./cardRoutes";
 
 export class CardControllerAdapter {
   cardApiHandler: OpenAPIHono;
@@ -22,6 +27,7 @@ export class CardControllerAdapter {
     this.addGetAllCardRoute();
     this.addCreateCardRoute();
     this.addGetQuizzRoute();
+    this.addAnswerCardRoute();
   }
 
   private addGetAllCardRoute() {
@@ -66,6 +72,24 @@ export class CardControllerAdapter {
       }
 
       return ctx.json(cardsDTO, 200);
+    });
+  }
+
+  private addAnswerCardRoute() {
+    this.cardApiHandler.openapi(answerCard, async (ctx) => {
+      const { isValid } = ctx.req.valid("json");
+      const { cardId } = ctx.req.valid("param");
+      let card: Card;
+
+      try {
+        card = this.cardManager.getCardById(cardId);
+      } catch (error) {
+        return ctx.json({ message: "Card not found" }, 404);
+      }
+
+      card = this.quizzManager.validateAnswer(card, isValid);
+
+      return ctx.body(null, 204);
     });
   }
 }

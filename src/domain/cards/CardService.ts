@@ -20,6 +20,10 @@ export class CardService implements ManageCard {
     return this.getFilteredCards(allCards, tags as string[]);
   }
 
+  getCardById(id: string): Card {
+    return this.cardRepository.getCardById(id);
+  }
+
   private shouldReturnAllCards(tags?: string[]): boolean {
     return !tags?.length;
   }
