@@ -49,3 +49,33 @@ export const getAllCardsRoute = createRoute({
   },
   tags: ["Cards"],
 });
+
+export const getQuizzRoute = createRoute({
+  method: "get",
+  path: "/cards/quizz",
+  request: {
+    query: z.object({
+      date: z
+        .string()
+        .date()
+        .optional()
+        .describe(
+          "Date of quizz. If not provided, date will be today. Example : 2023-11-03",
+        ),
+    }),
+  },
+  summary:
+    "Used to fetch all cards for a quizz at a given date. If no date is provided, quizz will be for today.",
+  responses: {
+    200: {
+      description: "Successful response",
+      content: {
+        "application/json": {
+          schema: z.array(CardDTO),
+        },
+      },
+    },
+    400: badRequestSchema,
+  },
+  tags: ["Learning"],
+});

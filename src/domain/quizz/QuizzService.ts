@@ -11,17 +11,17 @@ export class QuizzService implements ManageQuizz {
     this.cardRepository = cardRepository;
   }
 
-  getTodayQuizz(): Quizz {
+  getQuizz(date: Date): Quizz {
     const cards = this.cardRepository.getAllCards();
 
-    const validCards = this.getValidCards(cards);
+    const validCards = this.getValidCards(cards, date);
 
     return new Quizz(validCards);
   }
 
-  getValidCards(cards: Card[]): Card[] {
+  getValidCards(cards: Card[], date: Date): Card[] {
     return cards.filter((card) => {
-      return isCardDateValid(card);
+      return isCardDateValid(card, date);
     });
   }
 }

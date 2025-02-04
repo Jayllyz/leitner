@@ -14,8 +14,8 @@ const CardCategoryWaitTime: CardCategoryWaitTime = {
   SEVENTH: 64,
 };
 
-export function isCardDateValid(card: Card): boolean {
-  const today = new Date();
+export function isCardDateValid(card: Card, date: Date): boolean {
+  const targetDate = date;
   let cardDate: Date;
   try {
     cardDate = getCardNextQuizzDate(card);
@@ -24,9 +24,9 @@ export function isCardDateValid(card: Card): boolean {
   }
 
   return (
-    today.getDate() === cardDate.getDate() &&
-    today.getMonth() === cardDate.getMonth() &&
-    today.getFullYear() === cardDate.getFullYear()
+    targetDate.getDate() === cardDate.getDate() &&
+    targetDate.getMonth() === cardDate.getMonth() &&
+    targetDate.getFullYear() === cardDate.getFullYear()
   );
 }
 

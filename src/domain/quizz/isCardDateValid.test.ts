@@ -20,7 +20,7 @@ describe("isCardDateValid", () => {
       cardDomainObject.lastUpdateDate.getDate() - 1,
     );
 
-    expect(isCardDateValid(cardDomainObject)).toBe(true);
+    expect(isCardDateValid(cardDomainObject, new Date())).toBe(true);
   });
 
   test("card should be valid when card last update date is 2 days ago and category is 2", () => {
@@ -38,7 +38,7 @@ describe("isCardDateValid", () => {
       cardDomainObject.lastUpdateDate.getDate() - 2,
     );
 
-    expect(isCardDateValid(cardDomainObject)).toBe(true);
+    expect(isCardDateValid(cardDomainObject, new Date())).toBe(true);
   });
 
   test("card should be valid when card last update date is 16 days ago and category is 5", () => {
@@ -56,10 +56,10 @@ describe("isCardDateValid", () => {
       cardDomainObject.lastUpdateDate.getDate() - 16,
     );
 
-    expect(isCardDateValid(cardDomainObject)).toBe(true);
+    expect(isCardDateValid(cardDomainObject, new Date())).toBe(true);
   });
 
-  test("card should throw an error when category is DONE", () => {
+  test("card should return false when category is DONE", () => {
     const cardDomainObject = new Card(
       "6c10ad48-2bb8-4e2e-900a-21d62c00c07b",
       new CardUserData(
@@ -70,8 +70,6 @@ describe("isCardDateValid", () => {
       CardCategory.Done,
     );
 
-    expect(() => isCardDateValid(cardDomainObject)).toThrowError(
-      "Card is already done",
-    );
+    expect(isCardDateValid(cardDomainObject, new Date())).toBe(false);
   });
 });
