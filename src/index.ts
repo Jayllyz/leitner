@@ -14,7 +14,7 @@ import { CardControllerAdapter } from "./infrastructure/cards/driving/CardContro
 
 const app = new OpenAPIHono();
 
-app.use("*", prettyJSON(), secureHeaders(), cors());
+app.use("*", prettyJSON(), secureHeaders(), cors({ origin: "*", allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"] }));
 app.get("/", (c) => c.text("Welcome to the API!"));
 
 app.route("/", getCardController().cardApiHandler);
